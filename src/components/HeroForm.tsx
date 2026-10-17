@@ -16,7 +16,7 @@ export default function HeroForm() {
   }
 
   return (
-    <div className="p-6 sm:p-8">
+    <div className="p-6 sm:p-8 short:p-6">
       {done ? (
         <div className="flex flex-col items-start py-8" role="status">
           <CheckCircle weight="duotone" className="h-12 w-12 text-green" />
@@ -26,7 +26,7 @@ export default function HeroForm() {
           </p>
         </div>
       ) : (
-        <form onSubmit={onSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-4 short:space-y-3">
           <div>
             <h2 className="font-display text-2xl font-bold tracking-tight text-navy-ink">Get a free training proposal</h2>
             <p className="mt-1.5 text-[15px] text-muted">Tell us about your team and we will tailor a plan.</p>
@@ -34,25 +34,25 @@ export default function HeroForm() {
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
             <label className={labelCls}>
               Full name <span className="text-green-deep">*</span>
-              <input required name="name" autoComplete="name" placeholder="Your name" className={`${fieldCls} mt-1.5`} />
+              <input required name="name" autoComplete="name" placeholder="Your name" className={`${fieldCls} mt-1.5 short:h-11`} />
             </label>
             <label className={labelCls}>
               Company
-              <input name="company" autoComplete="organization" placeholder="Company name" className={`${fieldCls} mt-1.5`} />
+              <input name="company" autoComplete="organization" placeholder="Company name" className={`${fieldCls} mt-1.5 short:h-11`} />
             </label>
             <label className={labelCls}>
               Business email <span className="text-green-deep">*</span>
-              <input required type="email" name="email" autoComplete="email" placeholder="you@company.com" className={`${fieldCls} mt-1.5`} />
+              <input required type="email" name="email" autoComplete="email" placeholder="you@company.com" className={`${fieldCls} mt-1.5 short:h-11`} />
             </label>
             <label className={labelCls}>
               Phone
-              <input type="tel" name="phone" autoComplete="tel" placeholder="+971" className={`${fieldCls} mt-1.5`} />
+              <input type="tel" name="phone" autoComplete="tel" placeholder="+971" className={`${fieldCls} mt-1.5 short:h-11`} />
             </label>
           </div>
           <label className={labelCls}>
             Training interest
             <span className="relative mt-1.5 block">
-              <select name="interest" defaultValue="" className={`${fieldCls} appearance-none pr-11`}>
+              <select name="interest" defaultValue="" className={`${fieldCls} appearance-none pr-11 short:h-11`}>
               <option value="" disabled>
                 Select a category
               </option>
@@ -67,7 +67,7 @@ export default function HeroForm() {
           </label>
           <button
             type="submit"
-            className="inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-navy text-base font-semibold text-white transition-colors hover:bg-navy-deep"
+            className="inline-flex h-13 w-full items-center short:h-12 justify-center gap-2 rounded-full bg-navy text-base font-semibold text-white transition-colors hover:bg-navy-deep"
           >
             Request proposal
             <ArrowRight weight="bold" className="h-4 w-4" />

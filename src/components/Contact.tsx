@@ -67,7 +67,7 @@ export default function Contact() {
           </ul>
 
           <div className="relative mt-10 overflow-hidden rounded-3xl bg-navy-deep p-7 text-white">
-            <UaeMap className="pointer-events-none absolute -right-20 top-1/2 h-[190%] w-auto -translate-y-[42%]" />
+            <UaeMap className="uae-map-dark pointer-events-none absolute -right-20 top-1/2 h-[190%] w-auto -translate-y-[42%]" />
             <div className="relative max-w-[60%]">
               <div className="font-display text-xl font-semibold tracking-tight">Al Rigga, Dubai</div>
               <p className="mt-1.5 text-sm leading-relaxed text-white/70">

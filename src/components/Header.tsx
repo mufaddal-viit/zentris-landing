@@ -7,30 +7,43 @@ import { List, X, Phone, MapPin, Clock, EnvelopeSimple, ArrowRight } from "@phos
 import { company, nav } from "@/lib/content";
 import { Button } from "./ui";
 
+const topBarItems = [
+  { icon: MapPin, text: company.address },
+  { icon: Clock, text: company.hours },
+  { icon: EnvelopeSimple, text: company.email, href: `mailto:${company.email}` },
+];
+
 function TopBar() {
+  // The loop shifts by half the track, so each half (two copies) must be wider than a large screen.
+  // Only the first half is exposed to screen readers.
+  const track = [...topBarItems, ...topBarItems, ...topBarItems, ...topBarItems];
   return (
-    <div className="hidden bg-navy-deep text-[13px] text-white/75 md:block">
-      <div className="container-x flex h-10 items-center justify-between gap-6">
-        <div className="flex min-w-0 items-center gap-6">
-          <span className="flex min-w-0 items-center gap-2">
-            <MapPin weight="fill" className="h-3.5 w-3.5 shrink-0 text-green" />
-            <span className="truncate">{company.address}</span>
-          </span>
-          <span className="hidden items-center gap-2 xl:flex">
-            <Clock weight="fill" className="h-3.5 w-3.5 text-green" />
-            {company.hours}
-          </span>
-        </div>
-        <div className="flex shrink-0 items-center gap-6">
-          <a href={`mailto:${company.email}`} className="hidden items-center gap-2 transition-colors hover:text-white lg:flex">
-            <EnvelopeSimple weight="fill" className="h-3.5 w-3.5 text-green" />
-            {company.email}
-          </a>
-          <a href={company.phoneHref} className="flex items-center gap-2 font-medium text-white">
-            <Phone weight="fill" className="h-3.5 w-3.5 text-green" />
-            {company.phone}
-          </a>
-        </div>
+    <div
+      className="marquee hidden overflow-hidden bg-navy-deep text-[13px] text-white/80 md:block"
+      style={{ ["--marquee-duration" as string]: "40s" }}
+    >
+      <div className="marquee-track h-10 items-center">
+        {track.map((it, i) => {
+          const content = (
+            <>
+              <it.icon weight="fill" className="h-3.5 w-3.5 shrink-0 text-green" />
+              {it.text}
+            </>
+          );
+          const hidden = i >= topBarItems.length * 2;
+          return (
+            <span key={i} className="flex items-center whitespace-nowrap" aria-hidden={hidden || undefined}>
+              {it.href ? (
+                <a href={it.href} tabIndex={hidden ? -1 : undefined} className="flex items-center gap-2 px-8 transition-colors hover:text-white">
+                  {content}
+                </a>
+              ) : (
+                <span className="flex items-center gap-2 px-8">{content}</span>
+              )}
+              <span className="h-1 w-1 rounded-full bg-green/70" />
+            </span>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant short (@media (min-width: 1280px) and (max-height: 860px));
+
 :root {
   --navy: #15416e;
   --navy-deep: #0b2239;
@@ -132,13 +134,31 @@ p {
   }
 }
 
-/* UAE map */
+/* UAE map: light on the hero, inverted inside dark cards */
 .uae-map path {
+  fill: #d9e3ee;
+  stroke: #ffffff;
+  stroke-width: 1.6;
+}
+.uae-map path#AEDU {
+  fill: var(--green);
+}
+.uae-map-soft path#AEDU {
+  fill: rgba(24, 186, 96, 0.4);
+}
+.uae-map-dark path {
   fill: rgba(255, 255, 255, 0.08);
   stroke: rgba(255, 255, 255, 0.22);
   stroke-width: 1.4;
 }
-.uae-map path#AEDU {
+.uae-map-dark path#AEDU {
   fill: var(--green);
   stroke: var(--green);
+}
+
+/* Short desktop screens: tighten the hero so it still fits in one view */
+@media (min-width: 1280px) and (max-height: 860px) {
+  .t-display {
+    font-size: clamp(2.375rem, 1rem + 2.9vw, 4rem);
+  }
 }
