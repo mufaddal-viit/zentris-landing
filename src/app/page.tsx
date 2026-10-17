@@ -8,7 +8,9 @@ import Testimonials from "@/components/Testimonials";
 import Projects from "@/components/Projects";
 import ClientMarquee from "@/components/ClientMarquee";
 import Contact from "@/components/Contact";
+import FAQ from "@/components/FAQ";
 import Footer, { PreFooter } from "@/components/Footer";
+import FloatingActions from "@/components/FloatingActions";
 
 export default function Home() {
   return (
@@ -24,9 +26,11 @@ export default function Home() {
         <Projects />
         <ClientMarquee />
         <Contact />
+        <FAQ />
         <PreFooter />
       </main>
       <Footer />
+      <FloatingActions />
     </>
   );
 }

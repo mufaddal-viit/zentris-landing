@@ -273,6 +273,60 @@ export const projects = [
   },
 ];
 
+// FAQs
+export const faqs = [
+  {
+    question: "Are your training certificates internationally recognised?",
+    answer:
+      "Yes. Our certificates are issued in line with international standards such as OSHA, IOSH and NEBOSH guidelines. They are accepted across the GCC, and our management programs carry KHDA approval from the Government of Dubai.",
+  },
+  {
+    question: "Do you offer group or corporate discounts?",
+    answer:
+      "Absolutely. Our Corporate Batch and Enterprise plans are designed for teams. Groups of 10 or more receive preferential per-head pricing, and annual enterprise contracts include additional benefits like a dedicated account manager and compliance tracking.",
+  },
+  {
+    question: "Can training be delivered on-site at our facility?",
+    answer:
+      "Yes. We regularly deliver on-site training across the UAE. Our trainers bring all required equipment, materials and documentation so your teams can learn in their actual working environment with minimal disruption to operations.",
+  },
+  {
+    question: "What languages are courses delivered in?",
+    answer:
+      "Most courses are delivered in English with bilingual (English/Arabic) trainers available on request. For large workforce groups we also arrange Hindi and Urdu-speaking facilitators to ensure full comprehension.",
+  },
+  {
+    question: "Can you customise a course to our industry or job roles?",
+    answer:
+      "Yes. Every Corporate Batch and Enterprise engagement begins with a training needs analysis. We tailor case studies, scenarios and assessments to your specific industry, equipment and risk profile.",
+  },
+  {
+    question: "Are your programs KHDA approved?",
+    answer:
+      "Our management and corporate development programs are approved by the Knowledge and Human Development Authority (KHDA), the Government of Dubai's education regulator. Safety courses follow international accreditation standards.",
+  },
+  {
+    question: "What is your cancellation and rescheduling policy?",
+    answer:
+      "Individual bookings can be rescheduled free of charge up to 5 working days before the course date. Cancellations within 5 days are subject to a 25% administrative fee. Corporate bookings follow the terms agreed in the service proposal.",
+  },
+  {
+    question: "How can I verify a certificate issued by ZENTRIS?",
+    answer:
+      "Every certificate carries a unique verification code. Employers and auditors can verify authenticity by contacting us via email at info@zentristraining.com or by calling our office with the certificate number.",
+  },
+  {
+    question: "How long are your certificates valid?",
+    answer:
+      "Validity depends on the program. Most safety certifications are valid for 2-3 years, after which a refresher course is recommended. Management and soft-skill certificates do not expire.",
+  },
+  {
+    question: "Do you provide post-training support?",
+    answer:
+      "Yes. All participants receive digital course materials and reference guides. Enterprise clients benefit from ongoing support including refresher scheduling, competency tracking and access to our training advisory team.",
+  },
+];
+
 // DEMO client wordmarks
 export const clients = [
   "Al Futtaim", "Emaar", "DP World", "ADNOC", "Emirates", "Lulu Group", "Majid Al Futtaim", "Etisalat", "Dubai Holding", "ENOC", "Aldar", "Damac",

@@ -6,6 +6,15 @@ import Link from "next/link";
 import { List, X, Phone, MapPin, Clock, EnvelopeSimple, ArrowRight } from "@phosphor-icons/react";
 import { company, nav } from "@/lib/content";
 import { Button } from "./ui";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerClose,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 
 const topBarItems = [
   { icon: MapPin, text: company.address },
@@ -60,10 +69,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-  }, [open]);
-
   return (
     <>
       <TopBar />
@@ -101,51 +106,69 @@ export default function Header() {
             <Button href="#contact">Free training proposal</Button>
           </div>
 
-          <button
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-navy-ink lg:hidden"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-          >
-            {open ? <X className="h-5 w-5" weight="bold" /> : <List className="h-5 w-5" weight="bold" />}
-          </button>
-        </div>
+          {/* Mobile drawer - visible only below lg breakpoint */}
+          <Drawer open={open} onOpenChange={setOpen} swipeDirection="right">
+            <DrawerTrigger
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-navy-ink lg:hidden"
+              aria-label={open ? "Close menu" : "Open menu"}
+            >
+              {open ? <X className="h-5 w-5" weight="bold" /> : <List className="h-5 w-5" weight="bold" />}
+            </DrawerTrigger>
 
-        {open && (
-          <div id="mobile-nav" className="fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto bg-white lg:hidden">
-            <nav className="container-x flex flex-col pb-10 pt-4" aria-label="Mobile">
-              {nav.map((n) => (
-                <Link
-                  key={n.href}
-                  href={n.href}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-between border-b border-line py-4 font-display text-2xl font-semibold tracking-tight text-navy-ink"
+            <DrawerContent
+              className="!w-[85%] max-w-sm lg:hidden"
+              aria-label="Mobile navigation"
+            >
+              <DrawerHeader className="flex flex-row items-center justify-between border-b border-line p-4">
+                <DrawerTitle className="sr-only">Navigation menu</DrawerTitle>
+                <DrawerDescription className="sr-only">Site navigation links</DrawerDescription>
+                <Image src="/brand/logo.svg" alt={company.name} width={212} height={38} className="h-7 w-auto" />
+                <DrawerClose
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-navy-ink"
+                  aria-label="Close menu"
                 >
-                  {n.label}
-                  <ArrowRight className="h-5 w-5 text-muted" />
-                </Link>
-              ))}
-              <div className="mt-8 grid gap-3">
-                <a href="#contact" onClick={() => setOpen(false)} className="inline-flex h-13 items-center justify-center rounded-full bg-green font-semibold text-white">
-                  Free training proposal
-                </a>
-                <a
-                  href={company.phoneHref}
-                  className="inline-flex h-13 items-center justify-center gap-2 rounded-full border border-line font-semibold text-navy-ink"
-                >
-                  <Phone weight="duotone" className="h-5 w-5 text-green" />
-                  {company.phone}
-                </a>
-              </div>
-              <p className="mt-8 text-sm leading-relaxed text-muted">
-                {company.address}
-                <br />
-                {company.hours}
-              </p>
-            </nav>
-          </div>
-        )}
+                  <X className="h-5 w-5" weight="bold" />
+                </DrawerClose>
+              </DrawerHeader>
+
+              <nav className="flex flex-1 flex-col overflow-y-auto px-5 pb-10 pt-2" aria-label="Mobile">
+                {nav.map((n) => (
+                  <DrawerClose key={n.href} render={<span />}>
+                    <Link
+                      href={n.href}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center justify-between border-b border-line py-4 font-display text-2xl font-semibold tracking-tight text-navy-ink"
+                    >
+                      {n.label}
+                      <ArrowRight className="h-5 w-5 text-muted" />
+                    </Link>
+                  </DrawerClose>
+                ))}
+                <div className="mt-8 grid gap-3">
+                  <DrawerClose
+                    render={
+                      <a href="#contact" className="inline-flex h-13 items-center justify-center rounded-full bg-green font-semibold text-white">
+                        Free training proposal
+                      </a>
+                    }
+                  />
+                  <a
+                    href={company.phoneHref}
+                    className="inline-flex h-13 items-center justify-center gap-2 rounded-full border border-line font-semibold text-navy-ink"
+                  >
+                    <Phone weight="duotone" className="h-5 w-5 text-green" />
+                    {company.phone}
+                  </a>
+                </div>
+                <p className="mt-8 text-sm leading-relaxed text-muted">
+                  {company.address}
+                  <br />
+                  {company.hours}
+                </p>
+              </nav>
+            </DrawerContent>
+          </Drawer>
+        </div>
       </header>
     </>
   );
