@@ -113,18 +113,6 @@ p {
   animation-play-state: paused;
 }
 
-/* Horizontal rail */
-.rail {
-  scrollbar-width: none;
-  scroll-snap-type: x mandatory;
-}
-.rail::-webkit-scrollbar {
-  display: none;
-}
-.rail > * {
-  scroll-snap-align: start;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

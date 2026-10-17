@@ -1,27 +1,33 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, Clock, GraduationCap, CaretDown } from "@phosphor-icons/react";
 import type { Course } from "@/lib/content";
 import Illustration from "./Illustration";
 
-/* Featured programs: horizontal, swipeable rail.
-   Cards start on the container edge but scroll out to the viewport edge. */
-const edge = "max(var(--gutter), calc((100% - 1600px) / 2 + var(--gutter)))";
-const railPad = { paddingInline: edge, scrollPaddingInline: edge } as const;
+/* Featured programs: auto-advancing carousel, contained within the page width.
+   Cards per view come from --per (1 phone, 2 tablet, 3 desktop). The first three
+   cards are cloned onto the end so the loop always moves forward seamlessly. */
+const GAP = 24;
+const MAX_PER = 3;
+const INTERVAL = 4000;
 
-function FeaturedCard({ c }: { c: Course }) {
+function FeaturedCard({ c, hidden }: { c: Course; hidden?: boolean }) {
   return (
-    <article className="group flex w-[82vw] max-w-[420px] shrink-0 flex-col sm:w-[380px] xl:w-[420px]">
+    <article
+      aria-hidden={hidden || undefined}
+      className="group flex shrink-0 flex-col"
+      style={{ flexBasis: `calc((100% - (var(--per) - 1) * ${GAP}px) / var(--per))` }}
+    >
       <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-white/5">
         {c.image && (
           <Image
             src={c.image}
-            alt={c.title}
+            alt={hidden ? "" : c.title}
             fill
-            sizes="420px"
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           />
         )}
@@ -44,6 +50,7 @@ function FeaturedCard({ c }: { c: Course }) {
         <p className="mt-2.5 text-[15px] leading-relaxed text-white/65">{c.blurb}</p>
         <Link
           href="#contact"
+          tabIndex={hidden ? -1 : undefined}
           className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-[15px] font-semibold text-green transition-colors hover:text-white"
         >
           Enquire about this course <ArrowRight weight="bold" className="h-4 w-4" />
@@ -54,37 +61,130 @@ function FeaturedCard({ c }: { c: Course }) {
 }
 
 export function FeaturedRail({ courses, heading }: { courses: Course[]; heading: ReactNode }) {
-  const rail = useRef<HTMLDivElement>(null);
-  const scroll = (dir: 1 | -1) => {
-    const el = rail.current;
-    if (!el) return;
-    const card = el.firstElementChild as HTMLElement | null;
-    el.scrollBy({ left: dir * ((card?.offsetWidth ?? 400) + 24), behavior: "smooth" });
+  const n = courses.length;
+  const slides = [...courses, ...courses.slice(0, MAX_PER)];
+  const [index, setIndex] = useState(0);
+  const [animate, setAnimate] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const touchX = useRef<number | null>(null);
+  const backAfterJump = useRef(false);
+
+  const next = useCallback(() => {
+    setAnimate(true);
+    setIndex((i) => Math.min(i + 1, n));
+  }, [n]);
+
+  const prev = () => {
+    if (index > 0) {
+      setAnimate(true);
+      setIndex(index - 1);
+      return;
+    }
+    // At the start: jump silently to the cloned copy at the end, then slide back one.
+    backAfterJump.current = true;
+    setAnimate(false);
+    setIndex(n);
   };
+
+  // After sliding onto the clones, snap back to the real first card without animating.
+  const onTransitionEnd = () => {
+    if (index >= n) {
+      setAnimate(false);
+      setIndex(0);
+    }
+  };
+
+  // Re-enable the transition two frames after a silent jump, so the jump itself never animates.
+  useEffect(() => {
+    if (animate) return;
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => {
+        setAnimate(true);
+        if (backAfterJump.current) {
+          backAfterJump.current = false;
+          setIndex(n - 1);
+        }
+      });
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [animate, n]);
+
+  useEffect(() => {
+    if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(next, INTERVAL);
+    return () => window.clearInterval(id);
+  }, [paused, next]);
+
+  const active = index % n;
+  const arrow =
+    "flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-navy-deep";
+
   return (
-    <div>
-      <div className="container-x flex items-end justify-between gap-8">
+    <div className="container-x">
+      <div className="flex items-end justify-between gap-8">
         {heading}
         <div className="hidden shrink-0 gap-2 sm:flex">
-        <button
-          onClick={() => scroll(-1)}
-          aria-label="Previous courses"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-navy-deep"
-        >
-          <ArrowLeft weight="bold" className="h-5 w-5" />
-        </button>
-        <button
-          onClick={() => scroll(1)}
-          aria-label="Next courses"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white hover:text-navy-deep"
-        >
-          <ArrowRight weight="bold" className="h-5 w-5" />
-        </button>
+          <button onClick={prev} aria-label="Previous course" className={arrow}>
+            <ArrowLeft weight="bold" className="h-5 w-5" />
+          </button>
+          <button onClick={next} aria-label="Next course" className={arrow}>
+            <ArrowRight weight="bold" className="h-5 w-5" />
+          </button>
         </div>
       </div>
-      <div ref={rail} className="rail mt-12 flex gap-6 overflow-x-auto pb-2 lg:mt-16" style={railPad}>
-        {courses.map((c) => (
-          <FeaturedCard key={c.title} c={c} />
+
+      <div
+        className="mt-12 overflow-hidden lg:mt-16"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Best-selling safety certifications"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={() => setPaused(false)}
+        onTouchStart={(e) => {
+          touchX.current = e.touches[0].clientX;
+          setPaused(true);
+        }}
+        onTouchEnd={(e) => {
+          const dx = e.changedTouches[0].clientX - (touchX.current ?? 0);
+          if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();
+          touchX.current = null;
+          setPaused(false);
+        }}
+      >
+        <div
+          className={`flex gap-6 [--per:1] md:[--per:2] lg:[--per:3] ${
+            animate ? "transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:duration-0" : ""
+          }`}
+          style={{ transform: `translateX(calc(${-index} * (100% + ${GAP}px) / var(--per)))` }}
+          onTransitionEnd={(e) => e.target === e.currentTarget && onTransitionEnd()}
+        >
+          {slides.map((c, i) => (
+            <FeaturedCard key={`${c.title}-${i}`} c={c} hidden={i >= n} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-10 flex items-center gap-2" role="tablist" aria-label="Choose a course">
+        {courses.map((c, i) => (
+          <button
+            key={c.title}
+            role="tab"
+            aria-selected={i === active}
+            aria-label={c.title}
+            onClick={() => {
+              setAnimate(true);
+              setIndex(i);
+            }}
+            className={`h-2 rounded-full transition-all duration-500 ${
+              i === active ? "w-8 bg-green" : "w-2 bg-white/25 hover:bg-white/50"
+            }`}
+          />
         ))}
       </div>
     </div>
