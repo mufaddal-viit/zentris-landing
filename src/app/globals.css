@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #15416e;
+  --navy-deep: #0b2239;
+  --navy-ink: #0e2a47;
+  --green: #18ba60;
+  --green-deep: #0f9a4c;
+  --surface: #f3f6f9;
+  --line: #dfe6ee;
+  --ink: #0e1b2b;
+  --muted: #56667a;
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-ink: var(--navy-ink);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-instrument);
+  --font-display: var(--font-bricolage);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: var(--font-instrument), system-ui, sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-bricolage), var(--font-instrument), system-ui, sans-serif;
+  font-optical-sizing: auto;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Type scale */
+.t-display {
+  font-size: clamp(2.375rem, 1.4rem + 3.1vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.026em;
+  font-weight: 700;
+  font-variation-settings: "wdth" 96;
+}
+.t-h2 {
+  font-size: clamp(2rem, 1.4rem + 2vw, 3.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+  font-weight: 700;
+  font-variation-settings: "wdth" 96;
+}
+.t-h3 {
+  font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 650;
+}
+.t-lead {
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  line-height: 1.6;
+}
+
+/* Wide, fluid container: content runs closer to the edges on large screens */
+.container-x {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Marquee */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Horizontal rail */
+.rail {
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.rail > * {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* UAE map */
+.uae-map path {
+  fill: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.22);
+  stroke-width: 1.4;
+}
+.uae-map path#AEDU {
+  fill: var(--green);
+  stroke: var(--green);
 }
