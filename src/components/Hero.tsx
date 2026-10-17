@@ -91,8 +91,13 @@ export default function Hero() {
             <UaeMap
               className={`pointer-events-none absolute -top-[150px] right-[calc(100%-169px)] hidden h-[880px] w-[1117px] xl:block ${fade}`}
             />
-            <div className="relative z-10 rounded-3xl bg-white shadow-[0_0_0_1px_rgba(14,42,71,0.06),0_30px_60px_-28px_rgba(11,34,57,0.35)]">
-              <HeroForm />
+            {/* Green top accent and a soft tint that fades to white keep the card on-brand */}
+            <div className="relative z-10 overflow-hidden rounded-3xl bg-white shadow-[0_0_0_1px_rgba(24,186,96,0.18),0_30px_60px_-28px_rgba(11,34,57,0.35)]">
+              <span className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-green/[0.08] to-transparent" aria-hidden />
+              <span className="absolute inset-x-0 top-0 h-1.5 bg-green" aria-hidden />
+              <div className="relative">
+                <HeroForm />
+              </div>
             </div>
           </div>
         </div>
