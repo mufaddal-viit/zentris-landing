@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, Clock, GraduationCap, CaretDown } from "@phosphor-icons/react";
 import type { Course } from "@/lib/content";
+import Illustration from "./Illustration";
 
 /* Featured programs: horizontal, swipeable rail.
    Cards start on the container edge but scroll out to the viewport edge. */
@@ -94,8 +95,8 @@ export function FeaturedRail({ courses, heading }: { courses: Course[]; heading:
 
 function CourseCard({ c, className = "" }: { c: Course; className?: string }) {
   return (
-    <Link href="#contact" className={`group flex-col ${className}`}>
-      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface">
+    <Link href="#contact" className={`group relative flex-col overflow-hidden rounded-2xl bg-surface ${className}`}>
+      <div className="relative aspect-[4/3] overflow-hidden">
         {c.image && (
           <Image
             src={c.image}
@@ -110,13 +111,19 @@ function CourseCard({ c, className = "" }: { c: Course; className?: string }) {
           {c.duration}
         </span>
       </div>
-      <div className="flex flex-1 flex-col pt-5">
-        <p className="text-sm font-medium text-green-deep">{c.level}</p>
-        <h3 className="mt-1.5 font-display text-xl font-semibold leading-snug tracking-tight text-navy-ink">
+      <div className="relative flex flex-1 flex-col p-5 pb-6">
+        {c.art && (
+          <Illustration
+            name={c.art}
+            className="absolute -bottom-3 -right-2 h-32 w-auto opacity-[0.17] transition-opacity duration-500 group-hover:opacity-30"
+          />
+        )}
+        <p className="relative text-sm font-medium text-green-deep">{c.level}</p>
+        <h3 className="relative mt-1.5 max-w-[85%] font-display text-xl font-semibold leading-snug tracking-tight text-navy-ink">
           {c.title}
         </h3>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted">{c.blurb}</p>
-        <span className="mt-auto inline-flex items-center gap-2 pt-4 text-[15px] font-semibold text-navy-ink">
+        <p className="relative mt-2 max-w-[85%] text-[15px] leading-relaxed text-muted">{c.blurb}</p>
+        <span className="relative mt-auto inline-flex items-center gap-2 pt-4 text-[15px] font-semibold text-navy-ink">
           <span className="underline decoration-navy-ink/20 decoration-2 underline-offset-4 transition-colors group-hover:decoration-green">
             View course details
           </span>

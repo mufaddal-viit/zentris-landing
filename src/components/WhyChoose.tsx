@@ -3,6 +3,7 @@ import { SlidersHorizontal, GlobeHemisphereEast, HardHat } from "@phosphor-icons
 import type { Icon } from "@phosphor-icons/react";
 import { whyChoose } from "@/lib/content";
 import { Button, SectionHeading } from "./ui";
+import Illustration from "./Illustration";
 
 const icons: Record<string, Icon> = {
   tailored: SlidersHorizontal,
@@ -12,10 +13,15 @@ const icons: Record<string, Icon> = {
 
 export default function WhyChoose() {
   return (
-    <section id="why" className="bg-white py-20 sm:py-24 lg:py-32">
+    <section id="why" className="relative isolate overflow-hidden bg-white py-20 sm:py-24 lg:py-32">
       <div className="container-x">
         <div className="grid gap-10 xl:grid-cols-12 xl:items-end xl:gap-16">
-          <div className="xl:col-span-5">
+          <div className="relative xl:col-span-5">
+            {/* Crew illustration sits faintly behind the heading */}
+            <Illustration
+              name="crew"
+              className="absolute -right-6 -top-16 -z-10 w-[300px] opacity-[0.1] sm:w-[400px] xl:-right-4 xl:-top-28 xl:w-[460px]"
+            />
             <SectionHeading
               title="Training built around how your teams actually work"
               body="Founded by industry experts in management, occupational safety and firefighting, ZENTRIS delivers programs that are practical, compliant and measurable."

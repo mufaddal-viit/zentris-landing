@@ -67,7 +67,11 @@ export type Course = {
   level: string;
   image?: string;
   tag?: string;
+  /** Background line illustration from /public/illustrations */
+  art?: Art;
 };
+
+export type Art = "crane-slab" | "welder" | "truck" | "frame" | "timber" | "blueprint" | "hardhat";
 
 // A - Featured / best-selling (hero products)
 export const featuredCourses: Course[] = [
@@ -120,25 +124,25 @@ export const featuredCourses: Course[] = [
 
 // B - General purpose safety courses (grid)
 export const generalCourses: Course[] = [
-  { title: "Safe Lifting Operations", blurb: "Plan and supervise lifts safely.", duration: "1 Day", level: "Operative", image: u("1429497419816-9ca5cfb4571a", 800) },
-  { title: "Manhole Watcher", blurb: "Standby duties and gas monitoring.", duration: "Half Day", level: "Operative", image: u("1517089596392-fb9a9033e05b", 800) },
-  { title: "Hazard Identification & Risk Assessment", blurb: "HIRA methodology and controls.", duration: "1 Day", level: "Supervisor", image: u("1581092160562-40aa08e78837", 800) },
-  { title: "Confined Space Rescue", blurb: "Rescue techniques and equipment.", duration: "2 Days", level: "Advanced", image: u("1513828583688-c52646db42da", 800) },
-  { title: "Scaffolding Inspector", blurb: "Inspection, tagging and reporting.", duration: "2 Days", level: "Certification", image: u("1508450859948-4e04fabaa4ea", 800) },
-  { title: "Powered Pallet Truck", blurb: "Safe PPT operation in warehouses.", duration: "1 Day", level: "Operative", image: u("1586528116493-a029325540fa", 800) },
-  { title: "MEWP Operator", blurb: "Mobile elevated work platforms.", duration: "1 Day", level: "Certification", image: u("1504307651254-35680f356dfd", 800) },
-  { title: "Defensive Driving", blurb: "Hazard perception and vehicle control.", duration: "1 Day", level: "All levels", image: u("1601584115197-04ecc0da31d7", 800) },
-  { title: "Awareness for Working at Height", blurb: "Fall prevention and PPE.", duration: "Half Day", level: "Awareness", image: u("1574359411659-15573a27fd0c", 800) },
-  { title: "Welding Safely", blurb: "Hot-work hazards and controls.", duration: "1 Day", level: "Operative", image: u("1504917595217-d4dc5ebe6122", 800) },
-  { title: "Scaffolding Erection & Dismantling", blurb: "Safe build and strike procedures.", duration: "3 Days", level: "Operative", image: u("1531834685032-c34bf0d84c77", 800) },
-  { title: "Risk Assessment Awareness", blurb: "Five-step risk assessment.", duration: "Half Day", level: "Awareness", image: u("1503387762-592deb58ef4e", 800) },
-  { title: "Rigging & Slinging Safely", blurb: "Sling selection and load security.", duration: "1 Day", level: "Operative", image: u("1578575437130-527eed3abbec", 800) },
-  { title: "Heat Stress Awareness", blurb: "Prevention and first response.", duration: "Half Day", level: "Awareness", image: u("1541888946425-d81bb19240f5", 800) },
-  { title: "General Health & Safety Awareness", blurb: "Workplace H&S fundamentals.", duration: "Half Day", level: "Awareness", image: u("1589939705384-5185137a7f0f", 800) },
-  { title: "Electrical Safety", blurb: "LOTO, arc flash and safe isolation.", duration: "1 Day", level: "Technician", image: u("1621905251189-08b45d6a269e", 800) },
-  { title: "Dangerous Goods Handling", blurb: "Classification, storage and transport.", duration: "1 Day", level: "Operative", image: u("1494412574643-ff11b0a5c1c3", 800) },
-  { title: "Chemical Handling Safety Awareness", blurb: "SDS, PPE and spill response.", duration: "Half Day", level: "Awareness", image: u("1581093588401-fbb62a02f120", 800) },
-  { title: "Flagman / Banksman", blurb: "Vehicle marshalling and signals.", duration: "Half Day", level: "Operative", image: u("1503708928676-1cb796a0891e", 800) },
+  { title: "Safe Lifting Operations", blurb: "Plan and supervise lifts safely.", duration: "1 Day", level: "Operative", image: u("1429497419816-9ca5cfb4571a", 800), art: "crane-slab" },
+  { title: "Manhole Watcher", blurb: "Standby duties and gas monitoring.", duration: "Half Day", level: "Operative", image: u("1517089596392-fb9a9033e05b", 800), art: "hardhat" },
+  { title: "Hazard Identification & Risk Assessment", blurb: "HIRA methodology and controls.", duration: "1 Day", level: "Supervisor", image: u("1581092160562-40aa08e78837", 800), art: "blueprint" },
+  { title: "Confined Space Rescue", blurb: "Rescue techniques and equipment.", duration: "2 Days", level: "Advanced", image: u("1513828583688-c52646db42da", 800), art: "hardhat" },
+  { title: "Scaffolding Inspector", blurb: "Inspection, tagging and reporting.", duration: "2 Days", level: "Certification", image: u("1508450859948-4e04fabaa4ea", 800), art: "frame" },
+  { title: "Powered Pallet Truck", blurb: "Safe PPT operation in warehouses.", duration: "1 Day", level: "Operative", image: u("1586528116493-a029325540fa", 800), art: "timber" },
+  { title: "MEWP Operator", blurb: "Mobile elevated work platforms.", duration: "1 Day", level: "Certification", image: u("1504307651254-35680f356dfd", 800), art: "frame" },
+  { title: "Defensive Driving", blurb: "Hazard perception and vehicle control.", duration: "1 Day", level: "All levels", image: u("1601584115197-04ecc0da31d7", 800), art: "truck" },
+  { title: "Awareness for Working at Height", blurb: "Fall prevention and PPE.", duration: "Half Day", level: "Awareness", image: u("1574359411659-15573a27fd0c", 800), art: "frame" },
+  { title: "Welding Safely", blurb: "Hot-work hazards and controls.", duration: "1 Day", level: "Operative", image: u("1504917595217-d4dc5ebe6122", 800), art: "welder" },
+  { title: "Scaffolding Erection & Dismantling", blurb: "Safe build and strike procedures.", duration: "3 Days", level: "Operative", image: u("1531834685032-c34bf0d84c77", 800), art: "timber" },
+  { title: "Risk Assessment Awareness", blurb: "Five-step risk assessment.", duration: "Half Day", level: "Awareness", image: u("1503387762-592deb58ef4e", 800), art: "blueprint" },
+  { title: "Rigging & Slinging Safely", blurb: "Sling selection and load security.", duration: "1 Day", level: "Operative", image: u("1578575437130-527eed3abbec", 800), art: "crane-slab" },
+  { title: "Heat Stress Awareness", blurb: "Prevention and first response.", duration: "Half Day", level: "Awareness", image: u("1541888946425-d81bb19240f5", 800), art: "hardhat" },
+  { title: "General Health & Safety Awareness", blurb: "Workplace H&S fundamentals.", duration: "Half Day", level: "Awareness", image: u("1589939705384-5185137a7f0f", 800), art: "hardhat" },
+  { title: "Electrical Safety", blurb: "LOTO, arc flash and safe isolation.", duration: "1 Day", level: "Technician", image: u("1621905251189-08b45d6a269e", 800), art: "welder" },
+  { title: "Dangerous Goods Handling", blurb: "Classification, storage and transport.", duration: "1 Day", level: "Operative", image: u("1494412574643-ff11b0a5c1c3", 800), art: "truck" },
+  { title: "Chemical Handling Safety Awareness", blurb: "SDS, PPE and spill response.", duration: "Half Day", level: "Awareness", image: u("1581093588401-fbb62a02f120", 800), art: "hardhat" },
+  { title: "Flagman / Banksman", blurb: "Vehicle marshalling and signals.", duration: "Half Day", level: "Operative", image: u("1503708928676-1cb796a0891e", 800), art: "truck" },
 ];
 
 // C - Corporate & management development (DEMO additions beyond "Time Management Fundamentals")

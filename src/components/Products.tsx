@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Users, DownloadSimple, SealCheck } from "@phosphor-i
 import { featuredCourses, generalCourses, corporateCourses } from "@/lib/content";
 import { Button, SectionHeading } from "./ui";
 import { CourseGrid, FeaturedRail } from "./CourseBrowsers";
+import Illustration from "./Illustration";
 
 function FeaturedSection() {
   return (
@@ -60,6 +61,11 @@ function CorporateSection() {
             <Button href="#contact" variant="secondary" className="mt-8">
               Plan a corporate program
             </Button>
+            {/* Engineers reviewing plans fill the space under the sticky heading */}
+            <div className="mt-14 hidden items-end gap-6 opacity-25 lg:flex" aria-hidden>
+              <Illustration name="engineers" className="h-64 w-auto xl:h-72" />
+              <Illustration name="blueprint" className="h-56 w-auto xl:h-64" />
+            </div>
           </div>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:col-span-8">
