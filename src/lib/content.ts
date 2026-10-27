@@ -14,7 +14,30 @@ export const company = {
   services: "Corporate Training | Safety Training | Firefighting Training",
 };
 
+/** Navigation items.
+ *  `href` starting with "#" are anchor links for the landing page.
+ *  `href` starting with "/" are inner page links.
+ *  `children` is for mega-dropdown sub-items (trainings).
+ */
 export const nav = [
+  { label: "Home", href: "#top" },
+  { label: "About", href: "/about" },
+  {
+    label: "Trainings",
+    href: "/trainings",
+    children: [
+      { label: "Safety Training", href: "/trainings/safety" },
+      { label: "Corporate Training", href: "/trainings/corporate" },
+      { label: "Firefighting Training", href: "/trainings/firefighting" },
+    ],
+  },
+  { label: "Blog", href: "/blog" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/contact" },
+] as const;
+
+/** Simplified nav for the landing page (anchor links only) */
+export const landingNav = [
   { label: "Home", href: "#top" },
   { label: "About", href: "#why" },
   { label: "Trainings", href: "#products" },

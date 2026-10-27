@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { List, X, Phone, MapPin, Clock, EnvelopeSimple, ArrowRight } from "@phosphor-icons/react";
-import { company, nav } from "@/lib/content";
+import { company, landingNav as nav } from "@/lib/content";
 import { Button } from "./ui";
 import {
   Drawer,
