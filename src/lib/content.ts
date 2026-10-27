@@ -54,7 +54,8 @@ export const socials = [
   { label: "YouTube", href: "https://youtube.com/@ZentrisTraining", key: "youtube" },
 ] as const;
 
-// DEMO numbers - the live site shows truncated counters.
+// TODO_CLIENT: Replace with real verified numbers from the client.
+// Current values are placeholders from the old WordPress site.
 export const stats = [
   { value: "12k+", label: "Professionals trained" },
   { value: "300+", label: "Organizations served" },

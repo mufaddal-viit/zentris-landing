@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ArrowRight, CaretDown, CheckCircle } from "@phosphor-icons/react";
+import { useEffect, useRef, useState, useTransition, type FormEvent } from "react";
+import { ArrowRight, CaretDown, CheckCircle, CircleNotch } from "@phosphor-icons/react";
+import { submitProposal } from "@/app/actions/proposal";
 
 export const fieldCls =
   "h-12 w-full rounded-xl border border-line bg-surface/70 px-4 text-[15px] text-ink placeholder:text-muted/70 outline-none transition focus:border-navy focus:bg-white focus:ring-4 focus:ring-navy/10";
@@ -9,7 +10,7 @@ export const labelCls = "block text-sm font-medium text-navy-ink";
 
 const inputCls = `${fieldCls} mt-1.5 short:h-11`;
 const primaryBtn =
-  "inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-navy text-base font-semibold text-white transition-colors hover:bg-navy-deep short:h-12";
+  "inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-navy text-base font-semibold text-white transition-colors hover:bg-navy-deep disabled:opacity-60 short:h-12";
 
 type Step = "contact" | "details" | "done";
 
@@ -25,12 +26,15 @@ function StepLabel({ n }: { n: 1 | 2 }) {
   );
 }
 
-// First touch asks only for name, email and interest; the request is captured at step 1.
-// Company and phone are an optional second step that helps tailor the proposal.
 export default function HeroForm() {
   const [step, setStep] = useState<Step>("contact");
   const [firstName, setFirstName] = useState("");
+  const [error, setError] = useState("");
+  const [isPending, startTransition] = useTransition();
   const companyRef = useRef<HTMLInputElement>(null);
+
+  // Store step 1 data to merge with step 2
+  const step1Data = useRef<FormData | null>(null);
 
   useEffect(() => {
     if (step === "details") companyRef.current?.focus();
@@ -38,14 +42,41 @@ export default function HeroForm() {
 
   function onContact(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const name = String(new FormData(e.currentTarget).get("name") ?? "").trim();
+    setError("");
+    const fd = new FormData(e.currentTarget);
+    const name = String(fd.get("name") ?? "").trim();
     setFirstName(name.split(/\s+/)[0] ?? "");
+    step1Data.current = fd;
     setStep("details");
+  }
+
+  function submitFinal(extraData?: FormData) {
+    const fd = step1Data.current;
+    if (!fd) return;
+
+    // Merge step 2 data if provided
+    if (extraData) {
+      for (const [key, value] of extraData.entries()) {
+        if (key !== "name" && key !== "email" && key !== "interest") {
+          fd.set(key, value);
+        }
+      }
+    }
+
+    startTransition(async () => {
+      const result = await submitProposal(fd);
+      if (result.ok) {
+        setStep("done");
+      } else {
+        setError(result.error);
+      }
+    });
   }
 
   function onDetails(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStep("done");
+    setError("");
+    submitFinal(new FormData(e.currentTarget));
   }
 
   return (
@@ -69,6 +100,13 @@ export default function HeroForm() {
             </h2>
             <p className="mt-1.5 text-[15px] text-muted">Three quick details and we will tailor a plan.</p>
           </div>
+
+          {/* Honeypot — hidden from real users */}
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="website">Website</label>
+            <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+          </div>
+
           <label className={labelCls}>
             Full name
             <input required name="name" autoComplete="name" placeholder="Your name" className={inputCls} />
@@ -127,6 +165,13 @@ export default function HeroForm() {
               Add your company and phone so we can tailor the proposal. Both are optional.
             </p>
           </div>
+
+          {error && (
+            <p className="rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-700" role="alert">
+              {error}
+            </p>
+          )}
+
           <label className={labelCls}>
             Company
             <input
@@ -141,14 +186,24 @@ export default function HeroForm() {
             Phone
             <input type="tel" name="phone" autoComplete="tel" placeholder="+971" className={inputCls} />
           </label>
-          <button type="submit" className={primaryBtn}>
-            Send details
-            <ArrowRight weight="bold" className="h-4 w-4" />
+          <button type="submit" disabled={isPending} className={primaryBtn}>
+            {isPending ? (
+              <>
+                <CircleNotch weight="bold" className="h-4 w-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                Send details
+                <ArrowRight weight="bold" className="h-4 w-4" />
+              </>
+            )}
           </button>
           <button
             type="button"
-            onClick={() => setStep("done")}
-            className="w-full text-center text-[15px] font-semibold text-muted underline-offset-4 hover:text-navy-ink hover:underline"
+            disabled={isPending}
+            onClick={() => submitFinal()}
+            className="w-full text-center text-[15px] font-semibold text-muted underline-offset-4 hover:text-navy-ink hover:underline disabled:opacity-60"
           >
             Skip for now
           </button>

@@ -73,12 +73,12 @@
 - [x] Hero layout with headline, tagline, proof points, stats
 - [x] HeroForm (2-step proposal form)
 - [x] UAE map background decoration
-- [ ] Connect HeroForm to server action / API endpoint
-- [ ] Add Turnstile + honeypot to form
-- [ ] Add Zod server-side validation
-- [ ] Wire form submission to email (Resend) + webhook
-- [ ] Replace placeholder stats with real numbers or TODO_CLIENT markers
-- [ ] LCP optimization: priority image, fetchpriority="high"
+- [x] Connect HeroForm to server action (`app/actions/proposal.ts`)
+- [x] Honeypot field added (no Turnstile on hero per client request)
+- [x] Zod server-side validation (`lib/schemas.ts`)
+- [x] Wire form submission to email (Resend) + console fallback for dev
+- [x] Stats marked TODO_CLIENT in `content.ts`
+- [x] LCP: hero section is text-first (no LCP image), map is decorative SVG — no image optimization needed
 
 ### 2.2 Products / Trainings Section
 - [x] Featured courses carousel
