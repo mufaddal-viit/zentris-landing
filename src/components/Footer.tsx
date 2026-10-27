@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { company, socials } from "@/lib/content";
-import { Phone } from "@phosphor-icons/react/ssr";
+import { Phone, ArrowRight, CalendarCheck, Headset } from "@phosphor-icons/react/ssr";
 import { Button, SocialIcon } from "./ui";
+import UaeMap from "./UaeMap";
 
 const columns = [
   {
@@ -29,22 +30,67 @@ const columns = [
 
 export function PreFooter() {
   return (
-    <section className="bg-navy py-20 text-white sm:py-24 lg:py-28">
-      <div className="container-x grid gap-10 lg:grid-cols-12 lg:items-end">
-        <div className="lg:col-span-8">
-          <h2 className="t-h2 max-w-[18ch]">See ZENTRIS training in action</h2>
-          <p className="t-lead mt-5 max-w-2xl text-white/75">
-            Book a 30-minute consultation tailored to your workforce, and invest in upskilling and safety for your teams.
+    <section className="relative overflow-hidden bg-navy-ink py-24 text-white sm:py-28 lg:py-32">
+      {/* Decorative map background */}
+      <UaeMap className="uae-map-dark pointer-events-none absolute -right-20 top-1/2 h-[500px] w-[640px] -translate-y-1/2 opacity-30 lg:-right-8 lg:h-[600px] lg:w-[760px]" />
+
+      <div className="container-x relative">
+        <div className="max-w-3xl">
+          <p className="text-sm font-semibold uppercase tracking-widest text-green">
+            Let&rsquo;s work together
+          </p>
+          <h2 className="t-h2 mt-4 max-w-[22ch]">
+            Let&rsquo;s plan your next training program
+          </h2>
+          <p className="t-lead mt-5 max-w-2xl text-white/65">
+            Whether you need to upskill ten people or certify an entire workforce,
+            we&rsquo;ll build a program around your schedule, site and standards.
           </p>
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row lg:col-span-4 lg:flex-col lg:items-stretch xl:flex-row xl:justify-end">
-          <Button href="#contact" size="lg">
-            Request your free proposal
-          </Button>
-          <Button href={company.phoneHref} size="lg" variant="white">
-            <Phone weight="duotone" className="h-5 w-5 text-green-deep" />
-            {company.phone}
-          </Button>
+
+        {/* Action cards */}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:max-w-3xl lg:gap-5">
+          <a
+            href="#contact"
+            className="group flex items-start gap-5 rounded-2xl bg-white/[0.07] p-6 transition-colors hover:bg-white/[0.12]"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green text-white">
+              <CalendarCheck weight="duotone" className="h-6 w-6" />
+            </span>
+            <div className="flex-1">
+              <div className="font-display text-lg font-semibold tracking-tight">
+                Request a free proposal
+              </div>
+              <p className="mt-1 text-sm leading-relaxed text-white/60">
+                Tell us your team size and training needs — we&rsquo;ll send a tailored plan within one business day.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-green transition-colors group-hover:text-green-deep">
+                Get started
+                <ArrowRight weight="bold" className="h-3.5 w-3.5" />
+              </span>
+            </div>
+          </a>
+
+          <a
+            href={company.phoneHref}
+            className="group flex items-start gap-5 rounded-2xl bg-white/[0.07] p-6 transition-colors hover:bg-white/[0.12]"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
+              <Headset weight="duotone" className="h-6 w-6" />
+            </span>
+            <div className="flex-1">
+              <div className="font-display text-lg font-semibold tracking-tight">
+                Talk to an advisor
+              </div>
+              <p className="mt-1 text-sm leading-relaxed text-white/60">
+                Call us directly and speak with a training consultant who knows your industry.
+              </p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-white/80 transition-colors group-hover:text-white">
+                {company.phone}
+                <ArrowRight weight="bold" className="h-3.5 w-3.5" />
+              </span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
